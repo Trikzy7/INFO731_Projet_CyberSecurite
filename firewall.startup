@@ -1,0 +1,29 @@
+ifconfig eth0 1.2.3.2 netmask 255.255.255.0 up
+ifconfig eth1 5.5.5.2 netmask 255.255.255.0 up
+ifconfig eth2 6.6.6.2 netmask 255.255.255.0 up
+
+# route par défaut pour le trafic local du pc peuple
+route add default gw 1.2.3.1 dev eth0
+
+# route par défaut pour le trafic local du DNS
+route add default gw 5.5.5.1 dev eth1
+
+# route par défaut pour le trafic local du pc Firefly
+route add default gw 6.6.6.1 dev eth2
+
+# Autoriser le trafic ICMP (quand on ping apple.com depuis le pc1)
+iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+
+iptables -A FORWARD -p icmp --icmp-type echo-request -j ACCEPT
+iptables -A FORWARD -p icmp --icmp-type echo-reply -j ACCEPT
+
+
+# Pour le script python 
+# apt install python3-inotify
+
+#python3 usr/local/detect_traffic.py
+
+# Mettre dans le fichier dns_traffic.pcap le nom du site que le pc ping
+#tcpdump -w /usr/local/dns_traffic.pcap -nn -A | grep -i -E 'Query|A\?|AAAA\?' | awk -F '(Query|A\\?|AAAA\\?|:)' '{print $2}' > /dev/null &
+
+

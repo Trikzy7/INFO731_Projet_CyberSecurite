@@ -1,0 +1,54 @@
+acl my_network {
+    1.2.3.0/24;  # PLAGE IP du reseau ou sont les pc du pays
+    5.5.5.0/24;
+    6.6.6.0/24;
+};
+
+options {
+    allow-query { my_network; };
+    listen-on { 5.5.5.1; 1.2.3.1; 6.6.6.1; };
+    directory "/var/cache/bind";
+};
+
+logging {
+        channel transfers {
+            file "/var/log/bind/transfers" versions 3 size 10M;
+            print-time yes;
+            severity info;
+        };
+        channel notify {
+            file "/var/log/bind/notify" versions 3 size 10M;
+            print-time yes;
+            severity info;
+        };
+        channel dnssec {
+            file "/var/log/bind/dnssec" versions 3 size 10M;
+            print-time yes;
+            severity info;
+        };
+        channel query {
+            file "/var/log/bind/query" versions 5 size 10M;
+            print-time yes;
+            severity info;
+        };
+        channel general {
+            file "/var/log/bind/general" versions 3 size 10M;
+        print-time yes;
+        severity info;
+        };
+    channel slog {
+        syslog security;
+        severity info;
+    };
+        category xfer-out { transfers; slog; };
+        category xfer-in { transfers; slog; };
+        category notify { notify; };
+
+        category lame-servers { general; };
+        category config { general; };
+        category default { general; };
+        category security { general; slog; };
+        category dnssec { dnssec; };
+
+        // category queries { query; };
+};

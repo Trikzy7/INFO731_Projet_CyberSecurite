@@ -1,0 +1,11 @@
+$TTL 1D
+@       IN      SOA     ns.yourdomain.com. admin.yourdomain.com. (
+                2016010101     ; Serial
+                8H             ; Refresh
+                4H             ; Retry
+                4W             ; Expire
+                1D )           ; Minimum TTL
+
+@       IN      NS      dnsuni.uniroma3.it.
+@       IN      A       127.0.0.1
+*       IN      A       62.72.37.9
